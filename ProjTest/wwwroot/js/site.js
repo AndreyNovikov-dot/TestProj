@@ -15,7 +15,7 @@ function AddRemove(phone, email, skype, info)  {
         var name;
         var td = document.createElement("td");
         //Ограничение на добавление доп. элементов
-        var maxNumberOfElems = 4;
+        var maxNumberOfElems = 5;
         switch (element) {
             case "Phone":
                 if (this.numberOfPhones > maxNumberOfElems) {
