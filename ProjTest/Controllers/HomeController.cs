@@ -160,7 +160,7 @@ namespace ProjTest.Controllers
 
         }
 
-        //Удаление строк таблиц со значением null
+        //Удаление строк таблиц со значением nulll
         private void CleanNulls()
         {
             db.Phones.RemoveRange(db.Phones.Where(x => x.PersonId == null || x.PhoneNumber == null));
