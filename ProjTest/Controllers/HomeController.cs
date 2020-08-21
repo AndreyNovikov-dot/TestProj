@@ -10,9 +10,22 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Reflection.Metadata.Ecma335;
 using System.Reflection;
+using System.Collections;
 
 namespace ProjTest.Controllers
 {
+    public class TableData
+    {
+        public TableData(int id,string str) 
+        {
+            this.StringField = str;
+            this.Id = id;
+            
+        }
+        public int Id { get; set; }
+        public string StringField { get; set; }
+    }
+
     public class HomeController : Controller
     {
 
@@ -74,8 +87,8 @@ namespace ProjTest.Controllers
         [HttpPost]
         public IActionResult Change(Person p)
         {
+
             
-           
             AddModelError(p);
             
             if (ModelState.IsValid)
@@ -218,106 +231,113 @@ namespace ProjTest.Controllers
 
         }
 
-        //Проверка на уникальность телефона
-        private bool IsUniqPhone(Person p)
-        {
-            //Если вызван и Add
-            if (p.Id == 0)
-            {
-                foreach(var phone in p.Phone)
-                {
-                    if (db.Phones.Any(x => x.PhoneNumber == phone.PhoneNumber))
-                    {
-                        return false;
-                    }
-                }
-            }
-            //Если вызван из Change
-            else
-            {
-                foreach(var phone in p.Phone)
-                {
-
-                    if (db.Phones.Any(x => x.PhoneNumber == phone.PhoneNumber&&x.PersonId!=p.Id))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-        //Проверяем на уникальность Email
-        private bool IsUniqEmail(Person p)
-        {
-            //Если вызван и Add
-            if (p.Id == 0)
-            {
-                foreach (var email in p.Email)
-                {
-                    if (db.Emails.Any(x => x.EmailAddres == email.EmailAddres))
-                    {
-                        return false;
-                    }
-                }
-            }
-            //Если вызван из Change
-            else
-            {
-                foreach (var email in p.Email)
-                {
-
-                    if (db.Emails.Any(x => x.EmailAddres == email.EmailAddres && x.PersonId != p.Id))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-        //Проверяем на уникальность Skype
-        private bool IsUniqSkype(Person p)
-        {
-            //Если вызван и Add
-            if (p.Id == 0)
-            {
-                foreach (var skype in p.Skype)
-                {
-                    if (db.Skypes.Any(x => x.SkypeLogin == skype.SkypeLogin))
-                    {
-                        return false;
-                    }
-                }
-            }
-            //Если вызван из Change
-            else
-            {
-                foreach (var skype in p.Skype)
-                {
-
-                    if (db.Skypes.Any(x => x.SkypeLogin == skype.SkypeLogin && x.PersonId != p.Id))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
+      
 
         //Добавляем ошибка валидации
         private void AddModelError(Person p)
         {
-            if (!IsUniqPhone(p))
+            if (!IsExistsInDB(db.Phones.ToList(),p.Phone,p.Id,"PhoneNumber"))
             {
                 ModelState.AddModelError("Phone", "Такой телефон уже существует");
             }
-            if (!IsUniqEmail(p))
+            if (!IsExistsInDB(db.Emails.ToList(), p.Email, p.Id, "EmailAddres"))
             {
                 ModelState.AddModelError("Email", "Такой Email уже существует");
             }
-            if (!IsUniqSkype(p))
+            if (!IsExistsInDB(db.Skypes.ToList(), p.Skype, p.Id, "SkypeLogin"))
             {
                 ModelState.AddModelError("Skype", "Такой Skype уже существует");
             }
+            
+        }
+        //Создание листа из эелементов свойств Phone/Email/Skype сущности Person
+        private List<string> MakePersonList<T>(IList<T> listB,string listfield)
+        {
+
+            List<string> valueList = new List<string>();
+            
+            string value = "";
+
+            foreach (var item in listB)
+            {
+                PropertyInfo[] propslistB = item.GetType().GetProperties();
+                foreach(var prop in propslistB)
+                {
+                    
+                    if (prop.Name == listfield)
+                    {
+                        value = (string)prop.GetValue(item);
+                       
+                    }
+
+                }
+                valueList.Add(value); 
+                
+            }
+            return valueList;
+        }
+        //Создание листа из эелементов таблицы Phone/Email/Skype 
+        private List<TableData> MakeTableList<T>(IList<T> listB, string listfield)
+        {
+
+            List<TableData> valueList = new List<TableData>();
+            string FK = "PersonId";
+            string value = "";
+            int id = 0;
+            foreach (var item in listB)
+            {
+                PropertyInfo[] propslistB = item.GetType().GetProperties();
+                foreach (var prop in propslistB)
+                {
+
+                    if (prop.Name == FK)
+                    {
+                        id = (int)prop.GetValue(item);
+
+                    }
+                    if (prop.Name == listfield)
+                    {
+                        value = (string)prop.GetValue(item).ToString();
+
+                    }
+
+                }
+                TableData data = new TableData(id, value);
+                valueList.Add(data);
+
+            }
+            return valueList;
+        }
+
+        //Проверка на существования записи в БД
+        private bool IsExistsInDB<T>(IList<T> db,IList<T> person,int id,string propertyName)
+        {
+            List<string> personlist = MakePersonList(person, propertyName);
+            List<TableData> dblist = MakeTableList(db, propertyName);
+            //Если вызван из Add
+            if (id == 0)
+            {
+                foreach (var item in personlist)
+                {
+                    if (dblist.Any(x=>x.StringField==item))
+                    {
+                        return false;
+                    }
+                }
+            }
+            //Если вызван из Change
+            else
+            {
+                foreach (var item in personlist)
+                {
+
+                    if (dblist.Any(x => x.StringField == item&&x.Id!=id))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }
