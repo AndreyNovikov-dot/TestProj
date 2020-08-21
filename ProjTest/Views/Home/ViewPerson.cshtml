@@ -1,0 +1,108 @@
+﻿@model ProjTest.Models.Person
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Изменение записи</title>
+</head>
+<body>
+    <div>
+        <h3>Информация о контакте</h3>
+        <form method="get" action="~/Home/Change/@Model.Id">
+
+            <table>
+                <tr>
+                    <td>Фамилия</td>
+                    <td>@Model.Surname</td>
+                </tr>
+                <tr>
+                    <td>Имя</td>
+                    <td>@Model.Name</td>
+                </tr>
+                <tr>
+                    <td>Отчество</td>
+                    <td>@Model.PatrName</td>
+                </tr>
+                <tr>
+                    <td>Дата рождения</td>
+                    <td>@Model.BirthDay</td>
+                </tr>
+                <tr>
+                    <td>Организация</td>
+                    <td>@Model.Organization</td>
+                </tr>
+                <tr>
+                    <td>Должность</td>
+                    <td>@Model.Position</td>
+                </tr>
+                <tr>
+                    <td>Телефон</td>
+                    @if (Model.Phone != null)
+                    {
+                        @foreach (var phone in @Model.Phone)
+                        {
+                            <td>@phone.PhoneNumber</td>
+                        }
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    @if (Model.Email != null)
+                    {
+                        @foreach (var email in @Model.Email)
+                        {
+                            <td>@email.EmailAddres</td>
+                        }
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                </tr>
+                <tr>
+                    <td>Skype</td>
+                    @if (Model.Skype != null)
+                    {
+                        @foreach (var skype in @Model.Skype)
+                        {
+                            <td>@skype.SkypeLogin</td>
+                        }
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                </tr>
+                <tr>
+                    <td>Дополнительная информация</td>
+                    @if (Model.Addinf != null)
+                    {
+                        @foreach (var add in @Model.Addinf)
+                        {
+                            <td>@add.AdditionalInfo</td>
+                        }
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                </tr>
+                <tr><td><input type="submit" value="Изменить" /></td><td></td></tr>
+            </table>
+        </form>
+        <form action="~/Home/Index">
+            <input type="submit" value="Назад" />
+        </form>
+    </div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+﻿@model IEnumerable<ProjTest.Models.Person>
+
+@{
+    //ViewData["Title"] = "Список";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Список контактов</title>
+</head>
+<body>
+    <h3>Поиск</h3>
+    <form action="~/Home/Find">
+        <input type="text" name="find"  />
+        <input type="submit" href="~/Home/Find" value="Поиск" />
+    </form>
+    <br />
+    <h3>Контакты</h3>
+    <table>
+        <tr>            
+            <td>Фамилия</td>
+            <td>Имя</td>
+            <td>Отчество</td>
+            <td>Дата рождения</td>
+            <td>Организация</td>
+            <td>Должность</td>
+            <td>Контакты</td>            
+            <td></td>
+        </tr>
+        
+        @foreach (var person in Model)
+        { 
+    <tr>        
+        <td>@person.Surname</td>
+        <td>@person.Name</td>
+        <td>@person.PatrName</td>
+        <td>@person.BirthDay</td>
+        <td>@person.Organization</td>
+        <td>@person.Position</td>
+        <td><a href="~/Home/ViewPerson/@person.Id">Контакты</a></td>
+        <td><a href="~/Home/Change/@person.Id">Изменить</a></td>
+        <td><a href="~/Home/Delete/@person.Id">Удалить</a></td>
+    </tr>
+        }
+
+    </table>
+    <form action="~/Home/Add">
+        <input type="submit" href="~/Home/Add" value="Добавить запись" />
+    </form>
+</body>
+</html>
+
