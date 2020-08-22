@@ -14,6 +14,7 @@ using System.Collections;
 
 namespace ProjTest.Controllers
 {
+    //Класс для представления записи БД
     public class TableData
     {
         public TableData(int id,string str) 
@@ -233,7 +234,7 @@ namespace ProjTest.Controllers
 
       
 
-        //Добавляем ошибка валидации
+        //Добавляем ошибки валидации
         private void AddModelError(Person p)
         {
             if (!IsExistsInDB(db.Phones.ToList(),p.Phone,p.Id,"PhoneNumber"))
