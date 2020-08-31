@@ -298,7 +298,7 @@ namespace ProjTest.Controllers
                     }
                     if (prop.Name == listfield)
                     {
-                        value = (string)prop.GetValue(item).ToString();
+                        value = (string)prop.GetValue(item);
 
                     }
 
