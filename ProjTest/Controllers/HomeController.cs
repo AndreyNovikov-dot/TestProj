@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using ProjTest.Models;
+using System.Web;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Reflection.Metadata.Ecma335;
 using System.Reflection;
 using System.Collections;
 
@@ -90,7 +94,7 @@ namespace ProjTest.Controllers
             
             if (ModelState.IsValid)
             {
-                Person person = db.Persons.First(x=>x.Id==p.Id);
+                Person person = db.Persons.First(x => x.Id == p.Id);
 
                 person.Name = p.Name;
                 person.Organization = p.Organization;
@@ -102,9 +106,7 @@ namespace ProjTest.Controllers
                 person.Addinf = p.Addinf;
                 person.BirthDay = p.BirthDay;
                 person.Email = p.Email;
-
                 db.SaveChanges();
-
 
                 CleanNulls();
 
@@ -227,7 +229,7 @@ namespace ProjTest.Controllers
                 return Json(!db.Persons.Any(x => x.Name == Name && x.PatrName == PatrName && x.Surname == Surname && x.Id != Id));
             }
             
-            
+
         }
 
       
@@ -249,36 +251,58 @@ namespace ProjTest.Controllers
             }
             
         }
-        //Создание листа из элементов свойств Phone/Email/Skype сущности Person
+        //Создание листа из эелементов свойств Phone/Email/Skype сущности Person
         private List<string> MakePersonList<T>(IList<T> listB,string listfield)
         {
 
-            List<string> valueList = new List<string>();            
+            List<string> valueList = new List<string>();
+            
             string value = "";
-            PropertyInfo prop = typeof(T).GetProperty(listfield);
+
             foreach (var item in listB)
             {
-                 
-               value=(string)prop.GetValue(item);
-               valueList.Add(value); 
+                PropertyInfo[] propslistB = item.GetType().GetProperties();
+                foreach(var prop in propslistB)
+                {
+                    
+                    if (prop.Name == listfield)
+                    {
+                        value = (string)prop.GetValue(item);
+                       
+                    }
+
+                }
+                valueList.Add(value); 
                 
             }
             return valueList;
         }
-        //Создание листа из элементов таблицы Phone/Email/Skype 
+        //Создание листа из эелементов таблицы Phone/Email/Skype 
         private List<TableData> MakeTableList<T>(IList<T> listB, string listfield)
         {
 
             List<TableData> valueList = new List<TableData>();
-            
+            string FK = "PersonId";
             string value = "";
             int id = 0;
-            PropertyInfo propId = typeof(T).GetProperty("PersonId");
-            PropertyInfo propvalue = typeof(T).GetProperty(listfield);
             foreach (var item in listB)
-            {                
-                id = (int)propId.GetValue(item);                    
-                value = (string)propvalue.GetValue(item);
+            {
+                PropertyInfo[] propslistB = item.GetType().GetProperties();
+                foreach (var prop in propslistB)
+                {
+
+                    if (prop.Name == FK)
+                    {
+                        id = (int)prop.GetValue(item);
+
+                    }
+                    if (prop.Name == listfield)
+                    {
+                        value = (string)prop.GetValue(item);
+
+                    }
+
+                }
                 TableData data = new TableData(id, value);
                 valueList.Add(data);
 
