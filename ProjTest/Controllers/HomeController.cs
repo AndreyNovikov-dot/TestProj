@@ -251,58 +251,36 @@ namespace ProjTest.Controllers
             }
             
         }
-        //Создание листа из эелементов свойств Phone/Email/Skype сущности Person
-        private List<string> MakePersonList<T>(IList<T> listB,string listfield)
+        //Создание листа из элементов свойств Phone/Email/Skype сущности Person
+        private List<string> MakePersonList<T>(IList<T> listB, string listfield)
         {
 
             List<string> valueList = new List<string>();
-            
             string value = "";
-
+            PropertyInfo prop = typeof(T).GetProperty(listfield);
             foreach (var item in listB)
             {
-                PropertyInfo[] propslistB = item.GetType().GetProperties();
-                foreach(var prop in propslistB)
-                {
-                    
-                    if (prop.Name == listfield)
-                    {
-                        value = (string)prop.GetValue(item);
-                       
-                    }
 
-                }
-                valueList.Add(value); 
-                
+                value = (string)prop.GetValue(item);
+                valueList.Add(value);
+
             }
             return valueList;
         }
-        //Создание листа из эелементов таблицы Phone/Email/Skype 
+        //Создание листа из элементов таблицы Phone/Email/Skype 
         private List<TableData> MakeTableList<T>(IList<T> listB, string listfield)
         {
 
             List<TableData> valueList = new List<TableData>();
-            string FK = "PersonId";
+
             string value = "";
             int id = 0;
+            PropertyInfo propId = typeof(T).GetProperty("PersonId");
+            PropertyInfo propvalue = typeof(T).GetProperty(listfield);
             foreach (var item in listB)
             {
-                PropertyInfo[] propslistB = item.GetType().GetProperties();
-                foreach (var prop in propslistB)
-                {
-
-                    if (prop.Name == FK)
-                    {
-                        id = (int)prop.GetValue(item);
-
-                    }
-                    if (prop.Name == listfield)
-                    {
-                        value = (string)prop.GetValue(item);
-
-                    }
-
-                }
+                id = (int)propId.GetValue(item);
+                value = (string)propvalue.GetValue(item);
                 TableData data = new TableData(id, value);
                 valueList.Add(data);
 
