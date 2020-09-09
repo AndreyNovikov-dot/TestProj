@@ -249,7 +249,7 @@ namespace ProjTest.Controllers
             }
             
         }
-        //Создание листа из эелементов свойств Phone/Email/Skype сущности Person
+        //Создание листа из элементов свойств Phone/Email/Skype сущности Person
         private List<string> MakePersonList<T>(IList<T> listB,string listfield)
         {
 
@@ -265,7 +265,7 @@ namespace ProjTest.Controllers
             }
             return valueList;
         }
-        //Создание листа из эелементов таблицы Phone/Email/Skype 
+        //Создание листа из элементов таблицы Phone/Email/Skype 
         private List<TableData> MakeTableList<T>(IList<T> listB, string listfield)
         {
 
