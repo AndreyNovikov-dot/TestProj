@@ -5,10 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using ProjTest.Models;
-using System.Web;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Reflection.Metadata.Ecma335;
 using System.Reflection;
 using System.Collections;
 
@@ -94,21 +90,28 @@ namespace ProjTest.Controllers
             
             if (ModelState.IsValid)
             {
-                Person person = db.Persons.First(x => x.Id == p.Id);
+                Person person = db.Persons.First(x=>x.Id==p.Id);
 
-                person.Name = p.Name;
-                person.Organization = p.Organization;
-                person.PatrName = p.PatrName;
-                person.Position = p.Position;
-                person.Surname = p.Surname;
-                person.Phone = p.Phone;
-                person.Skype = p.Skype;
-                person.Addinf = p.Addinf;
-                person.BirthDay = p.BirthDay;
-                person.Email = p.Email;
+                //person.Name = p.Name;
+                //person.Organization = p.Organization;
+                //person.PatrName = p.PatrName;
+                //person.Position = p.Position;
+                //person.Surname = p.Surname;
+                //person.Phone = p.Phone;
+                //person.Skype = p.Skype;
+                //person.Addinf = p.Addinf;
+                //person.BirthDay = p.BirthDay;
+                //person.Email = p.Email;
+                //db.Persons.Update(person);
+                //db.Phones.UpdateRange(person.Phone);
+                //db.Emails.UpdateRange(person.Email);
+                //db.Skypes.UpdateRange(person.Skype);
+                //db.AdditionalInfs.UpdateRange(person.Addinf);
+                db.Entry(db.Persons.First(x => x.Id == p.Id)).CurrentValues.SetValues(p);
                 db.SaveChanges();
+                
 
-                CleanNulls();
+               // CleanNulls();
 
                 return RedirectToAction("Index");
             }
@@ -229,7 +232,7 @@ namespace ProjTest.Controllers
                 return Json(!db.Persons.Any(x => x.Name == Name && x.PatrName == PatrName && x.Surname == Surname && x.Id != Id));
             }
             
-
+            
         }
 
       
@@ -255,24 +258,14 @@ namespace ProjTest.Controllers
         private List<string> MakePersonList<T>(IList<T> listB,string listfield)
         {
 
-            List<string> valueList = new List<string>();
-            
+            List<string> valueList = new List<string>();            
             string value = "";
-
+            PropertyInfo prop = typeof(T).GetProperty(listfield);
             foreach (var item in listB)
             {
-                PropertyInfo[] propslistB = item.GetType().GetProperties();
-                foreach(var prop in propslistB)
-                {
-                    
-                    if (prop.Name == listfield)
-                    {
-                        value = (string)prop.GetValue(item);
-                       
-                    }
-
-                }
-                valueList.Add(value); 
+                 
+               value=(string)prop.GetValue(item);
+               valueList.Add(value); 
                 
             }
             return valueList;
@@ -282,27 +275,15 @@ namespace ProjTest.Controllers
         {
 
             List<TableData> valueList = new List<TableData>();
-            string FK = "PersonId";
+            
             string value = "";
             int id = 0;
+            PropertyInfo propId = typeof(T).GetProperty("PersonId");
+            PropertyInfo propvalue = typeof(T).GetProperty(listfield);
             foreach (var item in listB)
-            {
-                PropertyInfo[] propslistB = item.GetType().GetProperties();
-                foreach (var prop in propslistB)
-                {
-
-                    if (prop.Name == FK)
-                    {
-                        id = (int)prop.GetValue(item);
-
-                    }
-                    if (prop.Name == listfield)
-                    {
-                        value = (string)prop.GetValue(item).ToString();
-
-                    }
-
-                }
+            {                
+                id = (int)propId.GetValue(item);                    
+                value = (string)propvalue.GetValue(item);
                 TableData data = new TableData(id, value);
                 valueList.Add(data);
 
