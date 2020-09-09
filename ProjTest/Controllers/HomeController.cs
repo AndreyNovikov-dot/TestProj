@@ -92,26 +92,21 @@ namespace ProjTest.Controllers
             {
                 Person person = db.Persons.First(x=>x.Id==p.Id);
 
-                //person.Name = p.Name;
-                //person.Organization = p.Organization;
-                //person.PatrName = p.PatrName;
-                //person.Position = p.Position;
-                //person.Surname = p.Surname;
-                //person.Phone = p.Phone;
-                //person.Skype = p.Skype;
-                //person.Addinf = p.Addinf;
-                //person.BirthDay = p.BirthDay;
-                //person.Email = p.Email;
-                //db.Persons.Update(person);
-                //db.Phones.UpdateRange(person.Phone);
-                //db.Emails.UpdateRange(person.Email);
-                //db.Skypes.UpdateRange(person.Skype);
-                //db.AdditionalInfs.UpdateRange(person.Addinf);
-                db.Entry(db.Persons.First(x => x.Id == p.Id)).CurrentValues.SetValues(p);
-                db.SaveChanges();
-                
+                person.Name = p.Name;
+                person.Organization = p.Organization;
+                person.PatrName = p.PatrName;
+                person.Position = p.Position;
+                person.Surname = p.Surname;
+                person.Phone = p.Phone;
+                person.Skype = p.Skype;
+                person.Addinf = p.Addinf;
+                person.BirthDay = p.BirthDay;
+                person.Email = p.Email;
 
-               // CleanNulls();
+                db.SaveChanges();
+
+
+                CleanNulls();
 
                 return RedirectToAction("Index");
             }
