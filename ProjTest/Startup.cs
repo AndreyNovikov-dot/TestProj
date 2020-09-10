@@ -27,6 +27,7 @@ namespace ProjTest
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<Context>(options => options.UseSqlServer(connection));
+
             services.AddControllersWithViews();
         }
 

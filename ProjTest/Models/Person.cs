@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -31,11 +32,12 @@ namespace ProjTest.Models
         public string PatrName { get; set; }
 
         [Required(ErrorMessage = "Укажите дату рождения")]
-        [RegularExpression("(^0[1-9]|1[0-9]|2[0-9]|3[01])[-/.](0[1-9]|1[012])[-/.](19[0-9]{2}|2[0-9]{3}$)", ErrorMessage = "Неверный формат")]
+        [Range(typeof(DateTime), "1/1/1880", "1/1/2200", ErrorMessage = "Неверный формат")]
         public string BirthDay { get; set; }
 
         [Required(ErrorMessage = "Укажите огранизацию")]
         [RegularExpression("^[А-Я]{1}[а-яА-Я ]{0,20}$", ErrorMessage = "Неверный формат")]
+        
         public string Organization { get; set; }
 
         [Required(ErrorMessage = "Укажите должность")]
@@ -55,6 +57,7 @@ namespace ProjTest.Models
         public IList<AdditionalInf> Addinf { get; set; }
     }
 
+   
     //Проверка каждого члена листа Phone на соответсвие регулярному выражению
     class ListPhoneAttribute : ValidationAttribute
     {

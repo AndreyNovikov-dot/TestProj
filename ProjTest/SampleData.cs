@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using ProjTest.Models;
+using System;
 
 namespace ProjTest
 {
@@ -17,7 +18,7 @@ namespace ProjTest
                         Surname = "Новиков",
                         Name = "Андрей",
                         PatrName = "Андреевич",
-                        BirthDay = "16.04.1997",
+                        BirthDay ="16.04.1997",
                         Organization = "ИжГТУ",
                         Position = "Студент",
                        
@@ -28,7 +29,7 @@ namespace ProjTest
                         Surname = "Иванов",
                         Name = "Иван",
                         PatrName = "Иванович",
-                        BirthDay = "20.04.1997",
+                        BirthDay = "16.04.1997",
                         Organization = "УдГУ",
                         Position = "Студент",
                        

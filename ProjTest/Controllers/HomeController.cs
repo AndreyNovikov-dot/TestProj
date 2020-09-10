@@ -89,13 +89,13 @@ namespace ProjTest.Controllers
         public IActionResult Change(Person p)
         {
 
-            
             AddModelError(p);
-            
+           
             if (ModelState.IsValid)
             {
+               
                 Person person = db.Persons.First(x => x.Id == p.Id);
-
+               
                 person.Name = p.Name;
                 person.Organization = p.Organization;
                 person.PatrName = p.PatrName;
@@ -112,6 +112,8 @@ namespace ProjTest.Controllers
 
                 return RedirectToAction("Index");
             }
+
+            
 
             ViewBag.numberOfElements = CreateViewBag(p);
 
@@ -189,7 +191,7 @@ namespace ProjTest.Controllers
 
             db.SaveChanges();
         }
-
+       
         //Проверка листа на null
         private int IsNull<T>(IList<T> list)
         {
