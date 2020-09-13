@@ -32,7 +32,7 @@ namespace ProjTest.Models
         public string PatrName { get; set; }
 
         [Required(ErrorMessage = "Укажите дату рождения")]
-        [Range(typeof(DateTime), "1/1/1880", "1/1/2200", ErrorMessage = "Неверный формат")]
+        [RegularExpression(@"(((0|1)[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/((19|20)\d\d))$", ErrorMessage = "Неверный формат")]
         public string BirthDay { get; set; }
 
         [Required(ErrorMessage = "Укажите огранизацию")]
