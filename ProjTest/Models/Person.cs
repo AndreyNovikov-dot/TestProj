@@ -40,18 +40,19 @@ namespace ProjTest.Models
         
         [RegularExpression("^[А-Я]{1}[а-я ]{0,20}$", ErrorMessage = "Неверный формат")]
         public string Position { get; set; }
-        
-        [ListPhone(ErrorMessage = "Неверный формат или повторяющийся телефон")]
-        public IList<Phone> Phone { get; set; }
 
-        [ListEmail(ErrorMessage = "Неверный формат или повторяющийся Email")]
-        public IList<Email> Email { get; set; }
+        //[ListPhone(ErrorMessage = "Неверный формат или повторяющийся телефон")]
+        //public IList<Phone> Phone { get; set; }
 
-        [ListSkype(ErrorMessage = "Превышение макс длины или повторяющйся Skype")]
-        public IList<Skype> Skype { get; set; }
+        //[ListEmail(ErrorMessage = "Неверный формат или повторяющийся Email")]
+        //public IList<Email> Email { get; set; }
 
-        [ListAddinfo(ErrorMessage = "Превышение макс длины или повторение доп информации")]
-        public IList<AdditionalInf> Addinf { get; set; }
+        //[ListSkype(ErrorMessage = "Превышение макс длины или повторяющйся Skype")]
+        //public IList<Skype> Skype { get; set; }
+
+        //[ListAddinfo(ErrorMessage = "Превышение макс длины или повторение доп информации")]
+        //public IList<AdditionalInf> Addinf { get; set; }
+        public ICollection<ContactInfo> Contacts { get; set; }
     }
    
 

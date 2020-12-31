@@ -1,4 +1,4 @@
-﻿@model ProjTest.Models.Person
+﻿@model ProjTest.Models.ViewModel
 @{
     Layout = null;
 }
@@ -11,32 +11,32 @@
 <body>
     <div>
         <h3>Информация о контакте</h3>
-        <form method="get" action="~/Home/Change/@Model.Id">
+        <form method="get" action="~/Home/Change/@Model.Person.Id">
 
             <table>
                 <tr>
                     <td>Фамилия</td>
-                    <td>@Model.Surname</td>
+                    <td>@Model.Person.Surname</td>
                 </tr>
                 <tr>
                     <td>Имя</td>
-                    <td>@Model.Name</td>
+                    <td>@Model.Person.Name</td>
                 </tr>
                 <tr>
                     <td>Отчество</td>
-                    <td>@Model.PatrName</td>
+                    <td>@Model.Person.PatrName</td>
                 </tr>
                 <tr>
                     <td>Дата рождения</td>
-                    <td>@Model.BirthDay.ToString("d")</td>
+                    <td>@Model.Person.BirthDay.ToString("d")</td>
                 </tr>
                 <tr>
                     <td>Организация</td>
-                    <td>@Model.Organization</td>
+                    <td>@Model.Person.Organization</td>
                 </tr>
                 <tr>
                     <td>Должность</td>
-                    <td>@Model.Position</td>
+                    <td>@Model.Person.Position</td>
                 </tr>
                 <tr>
                     <td>Телефон</td>
@@ -44,7 +44,7 @@
                     {
                         @foreach (var phone in @Model.Phone)
                         {
-                            <td>@phone.PhoneNumber</td>
+                            <td>@phone</td>
                         }
                     }
                     else
@@ -58,7 +58,7 @@
                     {
                         @foreach (var email in @Model.Email)
                         {
-                            <td>@email.EmailAddres</td>
+                            <td>@email</td>
                         }
                     }
                     else
@@ -72,7 +72,7 @@
                     {
                         @foreach (var skype in @Model.Skype)
                         {
-                            <td>@skype.SkypeLogin</td>
+                            <td>@skype</td>
                         }
                     }
                     else
@@ -82,11 +82,11 @@
                 </tr>
                 <tr>
                     <td>Дополнительная информация</td>
-                    @if (Model.Addinf != null)
+                    @if (Model.Other != null)
                     {
-                        @foreach (var add in @Model.Addinf)
+                        @foreach (var add in @Model.Other)
                         {
-                            <td>@add.AdditionalInfo</td>
+                            <td>@add</td>
                         }
                     }
                     else
