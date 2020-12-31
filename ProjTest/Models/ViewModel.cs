@@ -8,10 +8,10 @@ namespace ProjTest.Models
     public class ViewModel
     {
         public Person Person { get; set; }
-        public IList<string> Email { get; set; }
-        public IList<string> Skype { get; set; }
-        public IList<string> Phone { get; set; }
-        public IList<string> Other { get; set; }
+        public List<string> Email { get; set; }
+        public List<string> Skype { get; set; }
+        public List<string> Phone { get; set; }
+        public List<string> Other { get; set; }
         public ViewModel (Person p)
         {
             Person = p;

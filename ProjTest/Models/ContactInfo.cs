@@ -17,6 +17,7 @@ namespace ProjTest.Models
     {
         [Key]
         public int ContactID { get; set; }
+        
         public int PersonID { get; set; }
         public ContactTypes Type { get; set; }
         public Person Person { get; set; }
