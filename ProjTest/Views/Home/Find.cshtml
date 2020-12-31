@@ -1,4 +1,4 @@
-﻿@*@model IEnumerable<ProjTest.Models.Person>
+﻿@model IEnumerable<ProjTest.Models.ViewModel>
 @{
     Layout = null;
 }
@@ -34,18 +34,18 @@
         {
     <tr>
         
-        <td>@person.Surname</td>
-        <td>@person.Name</td>
-        <td>@person.PatrName</td>
-        <td>@person.BirthDay.ToString("d")</td>
-        <td>@person.Organization</td>
-        <td>@person.Position</td>
+        <td>@person.Person.Surname</td>
+        <td>@person.Person.Name</td>
+        <td>@person.Person.PatrName</td>
+        <td>@person.Person.BirthDay.ToString("d")</td>
+        <td>@person.Person.Organization</td>
+        <td>@person.Person.Position</td>
         <td>
             @if (person.Phone != null)
             {
                 @for (int i = 0; i < person.Phone.Count; i++)
                 {
-                    <p>@person.Phone[@i].PhoneNumber</p>
+                    <p>@person.Phone[@i].</p>
                 }
             }
             else
@@ -59,7 +59,7 @@
             {
                 @for (int i = 0; i < person.Email.Count; i++)
                 {
-                    <p>@person.Email[@i].EmailAddres</p>
+                    <p>@person.Email[@i]</p>
                 }
             }
             else
@@ -73,7 +73,7 @@
             {
                 @for (int i = 0; i < person.Skype.Count; i++)
                 {
-                    <p>@person.Skype[@i].SkypeLogin</p>
+                    <p>@person.Skype[@i]</p>
                 }
             }
             else
@@ -83,11 +83,11 @@
 
         </td>
         <td>
-            @if (person.Addinf != null)
+            @if (person.Other != null)
             {
-                @for (int i = 0; i < person.Addinf.Count; i++)
+                @for (int i = 0; i < person.Other.Count; i++)
                 {
-                    <p>@person.Addinf[@i].AdditionalInfo</p>
+                    <p>@person.Other[@i]</p>
                 }
             }
             else
@@ -96,8 +96,8 @@
             }
 
         </td>
-        <td><a href="~/Home/Change/@person.Id">Изменить</a></td>
-        <td><a href="~/Home/Delete/@person.Id">Удалить</a></td>
+        <td><a href="~/Home/Change/@person.Person.Id">Изменить</a></td>
+        <td><a href="~/Home/Delete/@person.Person.Id">Удалить</a></td>
     </tr>
          }
     </table>
@@ -105,4 +105,4 @@
         <input type="submit" value="Назад" />
     </form>
 </body>
-</html>*@
+</html>

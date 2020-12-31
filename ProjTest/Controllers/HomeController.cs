@@ -147,8 +147,16 @@ namespace ProjTest.Controllers
             if (find != null)
             {
                 string[] split = find.Split(' ');
-               
-                return View(db.Persons.Where(p => p.Name.Contains(find) || p.Organization.Contains(find) || p.PatrName.Contains(find) || p.Position.Contains(find) || p.Surname.Contains(find) ).ToList());
+                List<Person> p=db.Persons.Include(x => x.Contacts).Where(p => p.Name.Contains(find) || p.Organization.Contains(find) || p.PatrName.Contains(find) || p.Position.Contains(find) || p.Surname.Contains(find) || p.Contacts.Where(i => i.PersonID == p.Id).Select(c => c.Info).Contains(find)).ToList();
+                List<ViewModel> model = new List<ViewModel>();
+                foreach (var person in p)
+                {
+                    ViewModel m = new ViewModel(person);
+                    model.Add(m);
+                }
+
+                return View(model);
+               // return View(db.Persons.Where(p => p.Name.Contains(find) || p.Organization.Contains(find) || p.PatrName.Contains(find) || p.Position.Contains(find) || p.Surname.Contains(find)||p.Contacts.Where(i=>i.PersonID==p.Id).Select(c=>c.Info).Contains(find)));
             }
             else
             {
