@@ -160,7 +160,7 @@ namespace ProjTest.Controllers
             }
             else
             {
-                return View(db.Persons.ToList());
+                return RedirectToAction("Index");
             }
 
         }
