@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Reflection.Metadata.Ecma335;
 using System.Reflection;
 using System.Collections;
+using System.Globalization;
 
 namespace ProjTest.Controllers
 {
@@ -39,6 +40,7 @@ namespace ProjTest.Controllers
             db.Emails.Include(p => p.Person).ToList();
             db.Skypes.Include(p => p.Person).ToList();
             db.AdditionalInfs.Include(p => p.Person).ToList();
+           
         }
 
         public IActionResult Index()
@@ -152,13 +154,8 @@ namespace ProjTest.Controllers
             if (find != null)
             {
                 string[] split = find.Split(' ');
-                List<Person> persons = new List<Person>();
-                foreach (var str in split)
-                {
-                    persons.AddRange(db.Persons.FromSqlInterpolated($"SELECT * FROM Persons INNER JOIN Skypes ON Skypes.PersonId=Persons.Id  WHERE SkypeLogin LIKE {"%" + str + "%"} UNION ALL  SELECT * FROM Persons INNER JOIN Phones ON Phones.PersonId=Persons.Id  WHERE Name LIKE {"%" + str + "%"} OR Surname LIKE {"%" + str + "%"} OR PatrName LIKE {"%" + str + "%"} OR BirthDay LIKE {"%" + str + "%"} OR Organization LIKE {"%" + str + "%"} OR Position LIKE {"%" + str + "%"} OR Phones.PhoneNumber LIKE {"%" + str + "%"} UNION ALL SELECT * FROM Persons INNER JOIN Emails ON Emails.PersonId=Persons.Id  WHERE EmailAddres LIKE {"%" + str + "%"} UNION ALL  SELECT * FROM Persons INNER JOIN AdditionalInfs ON AdditionalInfs.PersonId=Persons.Id  WHERE AdditionalInfo LIKE {"%" + str + "%"}").ToList());
-                }
-
-                return View(persons.Distinct());
+               
+                return View(db.Persons.Where(p => p.Name.Contains(find) || p.Organization.Contains(find) || p.PatrName.Contains(find) || p.Position.Contains(find) || p.Surname.Contains(find) ).ToList());
             }
             else
             {

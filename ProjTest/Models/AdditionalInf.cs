@@ -13,7 +13,7 @@ namespace ProjTest.Models
         
         public string AdditionalInfo{ get; set; }
         
-        public Nullable<int> PersonId { get; set; }
+        public int PersonId { get; set; }
         public Person Person { get; set; }
     }
    

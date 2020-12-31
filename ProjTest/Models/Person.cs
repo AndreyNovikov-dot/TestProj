@@ -16,8 +16,7 @@ namespace ProjTest.Models
         [Required]        
         public int Id { get; set; }
 
-        [Remote("IsPersonExists", "Home", ErrorMessage = "Уже есть", AdditionalFields = "Name,PatrName,Id")]
-        [Required(ErrorMessage = "Укажите фамилию")]
+        [Remote("IsPersonExists", "Home", ErrorMessage = "Уже есть", AdditionalFields = "Name,PatrName,Id")]        
         [RegularExpression("^[А-Я]{1}[а-я]{0,20}$", ErrorMessage = "Неверный формат")]
         public string Surname { get; set; }
 
@@ -26,21 +25,19 @@ namespace ProjTest.Models
         [RegularExpression("^[А-Я]{1}[а-я]{0,20}$", ErrorMessage = "Неверный формат")]
         public string Name { get; set; }
 
-        [Remote("IsPersonExists", "Home", ErrorMessage = "Уже есть", AdditionalFields = "Name,Surname,Id")]
-        [Required(ErrorMessage = "Укажите отчество")]
+        [Remote("IsPersonExists", "Home", ErrorMessage = "Уже есть", AdditionalFields = "Name,Surname,Id")]        
         [RegularExpression("^[А-Я]{1}[а-я]{0,20}$", ErrorMessage = "Неверный формат")]
         public string PatrName { get; set; }
 
-        [Required(ErrorMessage = "Укажите дату рождения")]
-        [RegularExpression(@"(((0|1)[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/((19|20)\d\d))$", ErrorMessage = "Неверный формат")]
-        public string BirthDay { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]        
+        public DateTime BirthDay { get; set; }
 
-        [Required(ErrorMessage = "Укажите огранизацию")]
-        [RegularExpression("^[А-Я]{1}[а-яА-Я ]{0,20}$", ErrorMessage = "Неверный формат")]
         
+        [RegularExpression("^[А-Я]{1}[а-яА-Я ]{0,20}$", ErrorMessage = "Неверный формат")]        
         public string Organization { get; set; }
 
-        [Required(ErrorMessage = "Укажите должность")]
+        
         [RegularExpression("^[А-Я]{1}[а-я ]{0,20}$", ErrorMessage = "Неверный формат")]
         public string Position { get; set; }
         
@@ -56,8 +53,8 @@ namespace ProjTest.Models
         [ListAddinfo(ErrorMessage = "Превышение макс длины или повторение доп информации")]
         public IList<AdditionalInf> Addinf { get; set; }
     }
-
    
+
     //Проверка каждого члена листа Phone на соответсвие регулярному выражению
     class ListPhoneAttribute : ValidationAttribute
     {

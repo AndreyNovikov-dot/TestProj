@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using ProjTest.Models;
 using System;
+using System.Globalization;
 
 namespace ProjTest
 {
@@ -18,7 +19,7 @@ namespace ProjTest
                         Surname = "Новиков",
                         Name = "Андрей",
                         PatrName = "Андреевич",
-                        BirthDay ="16/04/1997",
+                        BirthDay = DateTime.ParseExact("16-04-1997", "dd-MM-yyyy", CultureInfo.InvariantCulture),
                         Organization = "ИжГТУ",
                         Position = "Студент",
                        
@@ -29,7 +30,7 @@ namespace ProjTest
                         Surname = "Иванов",
                         Name = "Иван",
                         PatrName = "Иванович",
-                        BirthDay = "16/04/1997",
+                        BirthDay = DateTime.ParseExact("16-04-1997", "dd-MM-yyyy", CultureInfo.InvariantCulture),
                         Organization = "УдГУ",
                         Position = "Студент",
                        

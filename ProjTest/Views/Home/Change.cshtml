@@ -3,6 +3,7 @@
 @model ProjTest.Models.Person
 @{
     Layout = null;
+   
 }
 
 
@@ -51,7 +52,7 @@
                 </tr>
                 <tr>
                     <td>Дата рождения</td>
-                    <td><input type="text"  name="BirthDay" value="@Model.BirthDay" asp-for="BirthDay" /><span asp-validation-for="BirthDay"></span></td>
+                    <td><input type="text"  name="BirthDay" value="@Model.BirthDay.ToString("d")" asp-for="BirthDay" /><span asp-validation-for="BirthDay"></span></td>
                 </tr>
                 <tr>
                     <td>Организация</td>
