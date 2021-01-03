@@ -24,7 +24,7 @@ namespace ProjTest.Models
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime? BirthDay { get; set; }
+        public DateTime BirthDay { get; set; }
 
         [MaxLength(20)]
         [RegularExpression("^[А-Я]{1}[а-яА-Я ]{0,20}$", ErrorMessage = "Неверный формат")]

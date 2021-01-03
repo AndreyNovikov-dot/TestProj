@@ -98,19 +98,23 @@ namespace ProjTest.Models
         {
             var list = (IList<string>)value;
             string pattern = "(^8-[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}$)|(^[0-9]{2}-[0-9]{2}-[0-9]{2}$)";
-            foreach (var phone in list)
+            if (list != null)
             {
-                if (phone != null)
+                foreach (var phone in list)
                 {
-                    if (!Regex.IsMatch(phone, pattern))
+                    if (phone != null)
                     {
-                        return false;
+                        if (!Regex.IsMatch(phone, pattern))
+                        {
+                            return false;
+
+                        }
 
                     }
 
                 }
-
             }
+           
             return true;
 
         }
@@ -121,16 +125,20 @@ namespace ProjTest.Models
         {
             var list = (IList<string>)value;
             string pattern = "^[a-z0-9][-a-z0-9._]+@([-a-z0-9]+.)+[a-z]{2,5}$";
-            foreach (var email in list)
+            if (list != null)
             {
-                if (email != null)
+                foreach (var email in list)
                 {
-                    if (!Regex.IsMatch(email, pattern))
+                    if (email != null)
                     {
-                        return false;
+                        if (!Regex.IsMatch(email, pattern))
+                        {
+                            return false;
+                        }
                     }
                 }
             }
+               
 
             return true;
         }
@@ -142,16 +150,20 @@ namespace ProjTest.Models
         {
             var list = (IList<string>)value;
             int length = 30;
-            foreach (var skype in list)
+            if (list != null)
             {
-                if (skype != null)
+                foreach (var skype in list)
                 {
-                    if (skype.Length > length )
+                    if (skype != null)
                     {
-                        return false;
+                        if (skype.Length > length)
+                        {
+                            return false;
+                        }
                     }
                 }
             }
+          
             return true;
         }
     }
@@ -161,16 +173,20 @@ namespace ProjTest.Models
         {
             var list = (IList<string>)value;
             int length = 100;
-            foreach (var info in list)
+            if (list != null)
             {
-                if (info != null)
+                foreach (var info in list)
                 {
-                    if (info.Length > length)
+                    if (info != null)
                     {
-                        return false;
+                        if (info.Length > length)
+                        {
+                            return false;
+                        }
                     }
                 }
             }
+            
             return true;
         }
     }

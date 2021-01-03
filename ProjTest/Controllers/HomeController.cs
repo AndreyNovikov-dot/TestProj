@@ -32,9 +32,7 @@ namespace ProjTest.Controllers
             
             List<ViewModel> model = new List<ViewModel>();
             foreach (var person in db.Persons)
-            {
-                
-                
+            {          
                 model.Add(new ViewModel(person.Name,person.Surname,person.PatrName,person.BirthDay,person.Organization,person.Position,person.Id));
             }
             
@@ -54,7 +52,7 @@ namespace ProjTest.Controllers
                 db.Persons.Remove(db.Persons.First(x => x.Id == id));
                 db.SaveChanges();
 
-               //CleanNulls();
+               
 
                 return RedirectToAction("Index");
             }
@@ -143,13 +141,12 @@ namespace ProjTest.Controllers
         {
             
             PersonRecord person = m.ConvertToPerson();
-
+            
 
             if (ModelState.IsValid)
             {
                 db.Persons.Add(person);
-                db.SaveChanges();
-                
+                db.SaveChanges();                
 
                 return RedirectToAction("Index");
             }
@@ -157,7 +154,7 @@ namespace ProjTest.Controllers
             {
                 return View();
             }
-
+            
         }
 
         public IActionResult Find(String find)
@@ -175,14 +172,12 @@ namespace ProjTest.Controllers
                     model.Add(m);
                 }
 
-                return View(model);
-               // return View(db.Persons.Where(p => p.Name.Contains(find) || p.Organization.Contains(find) || p.PatrName.Contains(find) || p.Position.Contains(find) || p.Surname.Contains(find)||p.Contacts.Where(i=>i.PersonID==p.Id).Select(c=>c.Info).Contains(find)));
+                return View(model);               
             }
             else
             {
                 return RedirectToAction("Index");
             }
-
         }
 
         [HttpGet]
@@ -191,9 +186,6 @@ namespace ProjTest.Controllers
             PersonRecord person = db.Persons.Include(x=>x.Contacts).FirstOrDefault(x => x.Id == id);
             ViewModel model = new ViewModel(person);
             return View(model);
-
-        } 
-       
-       
+        }  
     }
 }

@@ -14,19 +14,7 @@ namespace ProjTest.Models
     public class PersonRecord:Person
     {
               
-        public int Id { get; set; }
-
-       
-        
-
-        
-        
-
-        
-        
-
-        //[ListAddinfo(ErrorMessage = "Превышение макс длины или повторение доп информации")]
-        //public IList<AdditionalInf> Addinf { get; set; }
+        public int Id { get; set; }    
         public ICollection<ContactInfo> Contacts { get; set; }
         public PersonRecord(int id,string personName, string personSurname, string personPatrName, DateTime personBirthDay, string personOrganization, string personPosition,ICollection<ContactInfo> personContacts):base(personName, personSurname, personPatrName,personBirthDay,personOrganization,personPosition)
         {
@@ -38,20 +26,5 @@ namespace ProjTest.Models
 
         }
     }
-
-
-    //Проверка каждого члена листа Phone на соответсвие регулярному выражению
-
-
-    ////Проверка каждого члена листа Email на соответсвие регулярному выражению
-
-
-    ////Проверка каждого члена листа Skype на непревышение макс длины 
-
-
-    ////Проверка каждого члена листа Addinf на непревышение макс длины 
-    
-
-
 }
    
