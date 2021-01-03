@@ -13,7 +13,7 @@ namespace ProjTest
             if (!context.Persons.Any())
             {
                 context.Persons.AddRange(
-                    new Person
+                    new PersonRecord
                     {
                         
                         Surname = "Новиков",
@@ -24,7 +24,7 @@ namespace ProjTest
                         Position = "Студент",
                        
                     },
-                    new Person
+                    new PersonRecord
                     {
 
                         Surname = "Иванов",

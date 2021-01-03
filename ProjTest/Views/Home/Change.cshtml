@@ -1,10 +1,9 @@
 ﻿
 
-@*@model ProjTest.Models.Person
+@model ProjTest.Models.ViewModel
 @{
     Layout = null;
-   
-}
+ }
 
 
 <!DOCTYPE html>
@@ -22,7 +21,7 @@
     
     <script src="@Url.Content("~/js/site.js")" type="text/javascript"></script>
     <script type="text/javascript">
-        var change = new AddRemove(@ViewBag.numberOfElements[0]-1, @ViewBag.numberOfElements[1]-1,@ViewBag.numberOfElements[2]-1, @ViewBag.numberOfElements[3]-1);        
+        var change = new AddRemove(@ViewBag.numberOfElements[0], @ViewBag.numberOfElements[1],@ViewBag.numberOfElements[2], @ViewBag.numberOfElements[3]);        
     </script>
    
 
@@ -65,16 +64,16 @@
                 <tr><td>Телефон</td></tr>
                 <tr id="Phone">
 
-                    @if (Model.Phone != null)
+                    @if (Model.Phone != null )
                     {
                         @for (int i = 0; i < @ViewBag.numberOfElements[0]; i++)
                         {
-                            <td id="phone @i"><input type="text" name="Phone[@i].PhoneNumber" value="@Model.Phone[i].PhoneNumber" asp-for="Phone" /></td>
+                            <td id="phone @i"><input type="text" name="Phone[@i]" value="@Model.Phone[i]" asp-for="Phone" /></td>
                         }
                     }
                     else
                     {
-                        <td id="phone 0"><input type="text" name="Phone[0].PhoneNumber"  value="" asp-for="Phone" /></td>
+                        <td id="phone 0"><input type="text" name="Phone[0]"  value="" asp-for="Phone" /></td>
                     }
 
                 </tr>
@@ -85,16 +84,16 @@
                 <tr><td>Email</td></tr>
                 <tr id="Email">
 
-                    @if (Model.Email != null)
+                    @if (Model.Email != null )
                     {
                         @for (int i = 0; i < @ViewBag.numberOfElements[1]; i++)
                         {
-                            <td id="email @i"><input type="text" name="Email[@i].EmailAddres" value="@Model.Email[i].EmailAddres" asp-for="Email" /></td>
+                            <td id="email @i"><input type="text" name="Email[@i]" value="@Model.Email[i]" asp-for="Email" /></td>
                         }
                     }
                     else
                     {
-                        <td id="email 0"><input type="text" name="Email[0].EmailAddres" value="" asp-for="Email" /></td>
+                        <td id="email 0"><input type="text" name="Email[0]" value="" asp-for="Email" /></td>
                     }
 
                 </tr>
@@ -105,16 +104,16 @@
                 <tr><td>Skype</td></tr>
                 <tr id="Skype">
 
-                    @if (Model.Skype != null)
+                    @if (Model.Skype != null )
                     {
                         @for (int i = 0; i < @ViewBag.numberOfElements[2]; i++)
                         {
-                            <td id="skype @i"><input type="text" name="Skype[@i].SkypeLogin" value="@Model.Skype[i].SkypeLogin" asp-for="Skype" /></td>
+                            <td id="skype @i"><input type="text" name="Skype[@i]" value="@Model.Skype[i]" asp-for="Skype" /></td>
                         }
                     }
                     else
                     {
-                        <td id="skype 0"><input type="text" name="Skype[0].SkypeLogin" value="" asp-for="Skype" /></td>
+                        <td id="skype 0"><input type="text" name="Skype[0]" value="" asp-for="Skype" /></td>
                     }
 
                 </tr>
@@ -125,20 +124,20 @@
                 <tr><td>Дополнительная информация</td></tr>
                 <tr id="Addinf">
 
-                    @if (Model.Addinf != null)
+                    @if (Model.Other != null)
                     {
                         @for (int i = 0; i < @ViewBag.numberOfElements[3]; i++)
                         {
-                            <td id="addinf @i"><input type="text" name="Addinf[@i].AdditionalInfo" value="@Model.Addinf[i].AdditionalInfo" asp-for="Addinf" /></td>
+                            <td id="addinf @i"><input type="text" name="Other[@i]" value="@Model.Other[i]" asp-for="Other" /></td>
                         }
                     }
                     else
                     {
-                        <td id="addinf 0"><input type="text" name="Addinf[0].AdditionalInfo" value="" asp-for="Addinf" /></td>
+                        <td id="addinf 0"><input type="text" name="Other[0]" value="" asp-for="Other" /></td>
                     }
 
                 </tr>
-                <tr><td><span asp-validation-for="Addinf" ></span></td></tr>
+                <tr><td><span asp-validation-for="Other" ></span></td></tr>
                 <tr>
                     <td><input type="button" onclick="change.dynamicElement('Addinf')" value="+" /><input type="button" onClick="change.remove('Addinf')" value="-"></td>
                 </tr>
@@ -153,4 +152,4 @@
 
 </body>
 
-</html>*@
+</html>

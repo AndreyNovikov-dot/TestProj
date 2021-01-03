@@ -3,10 +3,10 @@
 function AddRemove(phone, email, skype, info)  {
 
     //Пременные для контроля числа input'ов. Минимальное число input'ов каждого типа равно одному
-    this.numberOfPhones = phone;
-    this.numberOfEmails = email;
-    this.numberOfSkypes = skype;
-    this.numberOfAddInfs = info;
+    this.numberOfPhones = phone-1;
+    this.numberOfEmails = email-1;
+    this.numberOfSkypes = skype-1;
+    this.numberOfAddInfs = info-1;
     
 
     //Добавление input'а
@@ -24,7 +24,7 @@ function AddRemove(phone, email, skype, info)  {
                 else {
                     this.numberOfPhones++;
                     td.id = "phonenonfirst" + this.numberOfPhones;
-                    name = "Phone[" + this.numberOfPhones + "].PhoneNumber";
+                    name = "Phone[" + this.numberOfPhones + "]";
                     break;
                 }
                 
@@ -35,7 +35,7 @@ function AddRemove(phone, email, skype, info)  {
                 else {
                     this.numberOfEmails++;
                     td.id = "emailnonfirst" + this.numberOfEmails;
-                    name = "Email[" + this.numberOfEmails + "].EmailAddres";
+                    name = "Email[" + this.numberOfEmails + "]";
                     break;
                 }
                
@@ -46,7 +46,7 @@ function AddRemove(phone, email, skype, info)  {
                 else {
                     this.numberOfSkypes++;
                     td.id = "skypenonfirst " + this.numberOfSkypes;
-                    name = "Skype[" + this.numberOfSkypes + "].SkypeLogin";
+                    name = "Skype[" + this.numberOfSkypes + "]";
                     break;
                 }
                
@@ -57,7 +57,7 @@ function AddRemove(phone, email, skype, info)  {
                 else {
                     this.numberOfAddInfs++;
                     td.id = "addinfnonfirst " + this.numberOfAddInfs;
-                    name = "Addinf[" + this.numberOfAddInfs + "].AdditionalInfo";
+                    name = "Other[" + this.numberOfAddInfs + "]";
                     break;
                 }
         }

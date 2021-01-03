@@ -19,8 +19,9 @@ namespace ProjTest.Models
         public int ContactID { get; set; }
         
         public int PersonID { get; set; }
-        public ContactTypes Type { get; set; }
-        public Person Person { get; set; }
+        public ContactTypes Type { get; set; }        
+        public PersonRecord Person { get; set; }
+        [MaxLength(100)]
         public string Info { get; set; }
         public ContactInfo()
         {

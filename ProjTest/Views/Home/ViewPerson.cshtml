@@ -11,32 +11,32 @@
 <body>
     <div>
         <h3>Информация о контакте</h3>
-        <form method="get" action="~/Home/Change/@Model.Person.Id">
+        <form method="get" action="~/Home/Change/@Model.Id">
 
             <table>
                 <tr>
                     <td>Фамилия</td>
-                    <td>@Model.Person.Surname</td>
+                    <td>@Model.Surname</td>
                 </tr>
                 <tr>
                     <td>Имя</td>
-                    <td>@Model.Person.Name</td>
+                    <td>@Model.Name</td>
                 </tr>
                 <tr>
                     <td>Отчество</td>
-                    <td>@Model.Person.PatrName</td>
+                    <td>@Model.PatrName</td>
                 </tr>
                 <tr>
                     <td>Дата рождения</td>
-                    <td>@Model.Person.BirthDay.ToString("d")</td>
+                    <td>@Model.BirthDay.ToString("d")</td>
                 </tr>
                 <tr>
                     <td>Организация</td>
-                    <td>@Model.Person.Organization</td>
+                    <td>@Model.Organization</td>
                 </tr>
                 <tr>
                     <td>Должность</td>
-                    <td>@Model.Person.Position</td>
+                    <td>@Model.Position</td>
                 </tr>
                 <tr>
                     <td>Телефон</td>

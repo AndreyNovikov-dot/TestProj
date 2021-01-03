@@ -1,20 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ProjTest.Models
 {
-    public class ViewModel
+    public class ViewModel:Person
     {
-        public Person Person { get; set; }
+        public int Id { get; set; }
+
+        [ListEmail(ErrorMessage = "Неверный формат")]
         public List<string> Email { get; set; }
+
+        [ListSkype(ErrorMessage = "Превышение макс длины")]
         public List<string> Skype { get; set; }
+
+        [ListPhone(ErrorMessage = "Неверный формат")]
         public List<string> Phone { get; set; }
+
+        [ListSkype(ErrorMessage = "Превышение макс длины")]
         public List<string> Other { get; set; }
-        public ViewModel (Person p)
+        public ViewModel(string personName, string personSurname, string personPatrName, DateTime personBirthDay, string personOrganization, string personPosition, int personId) : base(personName, personSurname, personPatrName, personBirthDay, personOrganization, personPosition)
         {
-            Person = p;
+            Id=personId;
+        }
+        public ViewModel (PersonRecord p)
+        {
+            Id = p.Id;
+            Name = p.Name;
+            Surname = p.Surname;
+            PatrName = p.PatrName;
+            Organization = p.Organization;
+            Position=p.Position;
+            BirthDay = p.BirthDay;
+
             Email = p.Contacts.Where(x => x.Type == ContactTypes.Email&&x.PersonID==p.Id).Select(x=>x.Info).ToList();
             Skype = p.Contacts.Where(x => x.Type == ContactTypes.Skype && x.PersonID == p.Id).Select(x => x.Info).ToList();
             Phone = p.Contacts.Where(x => x.Type == ContactTypes.Phone && x.PersonID == p.Id).Select(x => x.Info).ToList();
@@ -40,25 +61,117 @@ namespace ProjTest.Models
             List<ContactInfo> contacts = new List<ContactInfo>();
             foreach (var element in coverts)
             {
-                foreach (var contact in element.Info)
+                if (element.Info != null)
                 {
-                    if (contact != null)
+                    foreach (var contact in element.Info)
                     {
-                        ContactInfo c = new ContactInfo(contact, element.Type);
-                        contacts.Add(c);
+                        if (contact != null)
+                        {
+                            ContactInfo c = new ContactInfo(contact, element.Type);
+                            c.PersonID = Id;
+                            contacts.Add(c);
+                        }
+
                     }
-                    
                 }
+               
             }
             return contacts;
         }
-        public Person ConvertToPerson()
+        public PersonRecord ConvertToPerson()
         {
-            Person person = new Person();
+           
             List<ContactInfo> contacts =ConvertToContacts(new ListsToContacts(Email, ContactTypes.Email), new ListsToContacts(Skype, ContactTypes.Skype), new ListsToContacts(Other, ContactTypes.Other), new ListsToContacts(Phone, ContactTypes.Phone));
-            person = Person;
-            person.Contacts = contacts;
-            return person;
+            return new PersonRecord(Id,Name, Surname, PatrName, BirthDay, Organization, Position, contacts);
+            
+            
+        }
+        public int[] CreateViewBag()
+        {
+            return new int[] {Phone is null ? 1:Phone.Count, Email is null?1:Email.Count ,Skype is null? 1:Skype.Count,Other is null? 1:Other.Count };
         }
     }
-}
+    class ListPhoneAttribute : ValidationAttribute
+    {
+
+        public override bool IsValid(object value)
+        {
+            var list = (IList<string>)value;
+            string pattern = "(^8-[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}$)|(^[0-9]{2}-[0-9]{2}-[0-9]{2}$)";
+            foreach (var phone in list)
+            {
+                if (phone != null)
+                {
+                    if (!Regex.IsMatch(phone, pattern))
+                    {
+                        return false;
+
+                    }
+
+                }
+
+            }
+            return true;
+
+        }
+    }
+    class ListEmailAttribute : ValidationAttribute
+    {
+        public override bool IsValid(object value)
+        {
+            var list = (IList<string>)value;
+            string pattern = "^[a-z0-9][-a-z0-9._]+@([-a-z0-9]+.)+[a-z]{2,5}$";
+            foreach (var email in list)
+            {
+                if (email != null)
+                {
+                    if (!Regex.IsMatch(email, pattern))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+    }
+    class ListSkypeAttribute : ValidationAttribute
+    {
+        public override bool IsValid(object value)
+        {
+            var list = (IList<string>)value;
+            int length = 30;
+            foreach (var skype in list)
+            {
+                if (skype != null)
+                {
+                    if (skype.Length > length )
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    }
+    class ListOtherAttribute : ValidationAttribute
+    {
+        public override bool IsValid(object value)
+        {
+            var list = (IList<string>)value;
+            int length = 100;
+            foreach (var info in list)
+            {
+                if (info != null)
+                {
+                    if (info.Length > length)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    }
+} 

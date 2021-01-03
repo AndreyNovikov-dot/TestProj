@@ -34,12 +34,12 @@
         {
     <tr>
         
-        <td>@person.Person.Surname</td>
-        <td>@person.Person.Name</td>
-        <td>@person.Person.PatrName</td>
-        <td>@person.Person.BirthDay.ToString("d")</td>
-        <td>@person.Person.Organization</td>
-        <td>@person.Person.Position</td>
+        <td>@person.Surname</td>
+        <td>@person.Name</td>
+        <td>@person.PatrName</td>
+        <td>@person.BirthDay.ToString("d")</td>
+        <td>@person.Organization</td>
+        <td>@person.Position</td>
         <td>
             @if (person.Phone != null)
             {
@@ -96,8 +96,8 @@
             }
 
         </td>
-        <td><a href="~/Home/Change/@person.Person.Id">Изменить</a></td>
-        <td><a href="~/Home/Delete/@person.Person.Id">Удалить</a></td>
+        <td><a href="~/Home/Change/@person.Id">Изменить</a></td>
+        <td><a href="~/Home/Delete/@person.Id">Удалить</a></td>
     </tr>
          }
     </table>
