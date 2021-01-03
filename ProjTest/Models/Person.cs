@@ -9,28 +9,28 @@ namespace ProjTest.Models
 {
     public class Person
     {
-        
+        [MaxLength(20)]
         [RegularExpression("^[А-Я]{1}[а-я]{0,20}$", ErrorMessage = "Неверный формат")]
         public string Surname { get; set; }
 
-        
+        [MaxLength(20)]
         [Required]
         [RegularExpression("^[А-Я]{1}[а-я]{0,20}$", ErrorMessage = "Неверный формат")]
         public string Name { get; set; }
 
-        
+        [MaxLength(20)]
         [RegularExpression("^[А-Я]{1}[а-я]{0,20}$", ErrorMessage = "Неверный формат")]
         public string PatrName { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime BirthDay { get; set; }
+        public DateTime? BirthDay { get; set; }
 
-
+        [MaxLength(20)]
         [RegularExpression("^[А-Я]{1}[а-яА-Я ]{0,20}$", ErrorMessage = "Неверный формат")]
         public string Organization { get; set; }
 
-
+        [MaxLength(20)]
         [RegularExpression("^[А-Я]{1}[а-я ]{0,20}$", ErrorMessage = "Неверный формат")]
         public string Position { get; set; }
         public Person()
