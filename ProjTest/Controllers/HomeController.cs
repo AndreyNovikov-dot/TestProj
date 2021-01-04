@@ -12,6 +12,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Reflection;
 using System.Collections;
 using System.Globalization;
+using Microsoft.Extensions.Logging;
 
 namespace ProjTest.Controllers
 {
@@ -21,21 +22,23 @@ namespace ProjTest.Controllers
     {
 
         Context db;
-        
-        public HomeController(Context context)
+        private readonly ILogger<HomeController> logger;
+
+        public HomeController(Context context, ILogger<HomeController> log)
         {
-            db = context;           
+            db = context;
+            logger = log;
         }
 
         public IActionResult Index()
         {
-            
+            logger.LogInformation("");
             List<ViewModel> model = new List<ViewModel>();
             foreach (var person in db.Persons)
             {          
                 model.Add(new ViewModel(person.Name,person.Surname,person.PatrName,person.BirthDay,person.Organization,person.Position,person.Id));
             }
-            
+            logger.LogInformation("Вход на главную страницу");
             return View(model);
 
         }
@@ -46,15 +49,24 @@ namespace ProjTest.Controllers
             if (id == null)
             {
                 return RedirectToAction("Index");
+
             }
             else
             {
-                db.Persons.Remove(db.Persons.First(x => x.Id == id));
-                db.SaveChanges();
+                try
+                {
+                    db.Persons.Remove(db.Persons.First(x => x.Id == id));
+                    db.SaveChanges();
+                    logger.LogInformation("Удален пользователь с ID:{0}", id);
 
+                    return RedirectToAction("Index");
+                }
+                catch(Exception ex)
+                {
+                    logger.LogInformation(" Ошибка удаления пользователя с ID:{0} Ошибка:{1}", id,ex.Message);
+                    return RedirectToAction("Index");
+                }
                
-
-                return RedirectToAction("Index");
             }
             
         }
@@ -84,50 +96,62 @@ namespace ProjTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                PersonRecord person = db.Persons.Include(c => c.Contacts).First(x => x.Id == p.Id);
-                PersonRecord updatedPerson = p.ConvertToPerson();
-
-                if (person != null)
+                try
                 {
 
-                    db.Entry(person).CurrentValues.SetValues(updatedPerson);
-                }
 
-                foreach (var contact in person.Contacts.ToList())
-                {
-                    if (updatedPerson.Contacts.FirstOrDefault(c => c.Info == contact.Info && c.Type == contact.Type) == null || updatedPerson.Contacts.Where(c => c.Info == contact.Info && c.Type == contact.Type).Count() < person.Contacts.Where(c => c.Info == contact.Info && c.Type == contact.Type).Count())
+                    PersonRecord person = db.Persons.Include(c => c.Contacts).First(x => x.Id == p.Id);
+                    PersonRecord updatedPerson = p.ConvertToPerson();
+
+                    if (person != null)
                     {
-                        person.Contacts.Remove(contact);
-                        db.Contacts.Remove(contact);
+
+                        db.Entry(person).CurrentValues.SetValues(updatedPerson);
                     }
-                }
-                foreach (var contact in updatedPerson.Contacts.ToList())
-                {
 
-                    if (person.Contacts.FirstOrDefault(c => c.Info == contact.Info && c.Type == contact.Type) == null || updatedPerson.Contacts.Where(c => c.Info == contact.Info && c.Type == contact.Type).Count() > person.Contacts.Where(c => c.Info == contact.Info && c.Type == contact.Type).Count())
+                    foreach (var contact in person.Contacts.ToList())
                     {
-
-                        var personContact = new ContactInfo()
+                        if (updatedPerson.Contacts.FirstOrDefault(c => c.Info == contact.Info && c.Type == contact.Type) == null || updatedPerson.Contacts.Where(c => c.Info == contact.Info && c.Type == contact.Type).Count() < person.Contacts.Where(c => c.Info == contact.Info && c.Type == contact.Type).Count())
                         {
-                            Info = contact.Info,
-                            Type = contact.Type,
-                            PersonID = person.Id,
-                            Person = person
-                        };
-                        person.Contacts.Add(personContact);
-                        db.Contacts.Add(personContact);
-
+                            person.Contacts.Remove(contact);
+                            db.Contacts.Remove(contact);
+                        }
                     }
+                    foreach (var contact in updatedPerson.Contacts.ToList())
+                    {
+
+                        if (person.Contacts.FirstOrDefault(c => c.Info == contact.Info && c.Type == contact.Type) == null || updatedPerson.Contacts.Where(c => c.Info == contact.Info && c.Type == contact.Type).Count() > person.Contacts.Where(c => c.Info == contact.Info && c.Type == contact.Type).Count())
+                        {
+
+                            var personContact = new ContactInfo()
+                            {
+                                Info = contact.Info,
+                                Type = contact.Type,
+                                PersonID = person.Id,
+                                Person = person
+                            };
+                            person.Contacts.Add(personContact);
+                            db.Contacts.Add(personContact);
+
+                        }
+                    }
+                    db.SaveChanges();
+                    logger.LogInformation("Изменен пользователь ID:{0}", p.Id);
+                    return RedirectToAction("Index");
                 }
-                db.SaveChanges();
-                return RedirectToAction("Index");               
+                catch(Exception ex)
+                {
+                    logger.LogInformation(" Ошибка изменения пользователя с ID:{0} Ошибка:{1}", p.Id, ex.Message);
+                    ModelState.AddModelError("Name", "Ошибка при изменении пользователя. Повторите попытку");
+                    ViewBag.numberOfElements = p.CreateViewBag();
+                    return View(p);
+                }
             }
             else
             {
                 ViewBag.numberOfElements = p.CreateViewBag();
                 return View(p);
-            }   
-            
+            }
         }
 
         [HttpGet]
@@ -145,10 +169,20 @@ namespace ProjTest.Controllers
 
             if (ModelState.IsValid)
             {
-                db.Persons.Add(person);
-                db.SaveChanges();                
-
-                return RedirectToAction("Index");
+                
+                try
+                {
+                    db.Persons.Add(person);
+                    db.SaveChanges();
+                    logger.LogInformation("Добавлен пользователь {0}", m.Name);
+                    return RedirectToAction("Index");
+                }
+                catch(Exception ex)
+                {
+                    logger.LogInformation(" Ошибка изменения пользователя с Именем:{0} Ошибка:{1}", m.Name, ex.Message);
+                    ModelState.AddModelError("Name", "Ошибка при добавлении пользователя. Повторите попытку");
+                    return View();
+                }
             }
             else
             {
@@ -169,9 +203,10 @@ namespace ProjTest.Controllers
                 foreach (var person in p)
                 {
                     ViewModel m = new ViewModel(person);
+                    logger.LogInformation("Найден пользователь с ID:{0}",person.Id);
                     model.Add(m);
                 }
-
+                
                 return View(model);               
             }
             else
@@ -185,7 +220,9 @@ namespace ProjTest.Controllers
         {
             PersonRecord person = db.Persons.Include(x=>x.Contacts).FirstOrDefault(x => x.Id == id);
             ViewModel model = new ViewModel(person);
+            logger.LogInformation("Просмотрен пользователь с ID", id);
             return View(model);
+
         }  
     }
 }
