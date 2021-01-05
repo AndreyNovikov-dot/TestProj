@@ -24,7 +24,7 @@ namespace ProjTest.Controllers
 
         public IActionResult Index()
         {
-            logger.LogInformation("");
+            
             List<ViewModel> model = new List<ViewModel>();
             foreach (var person in db.Persons)
             {          
