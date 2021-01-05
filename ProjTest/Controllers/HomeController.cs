@@ -220,7 +220,7 @@ namespace ProjTest.Controllers
         {
             PersonRecord person = db.Persons.Include(x=>x.Contacts).FirstOrDefault(x => x.Id == id);
             ViewModel model = new ViewModel(person);
-            logger.LogInformation("Просмотрен пользователь с ID", id);
+            logger.LogInformation("Просмотрен пользователь с ID:{0}", person.Id);
             return View(model);
 
         }  

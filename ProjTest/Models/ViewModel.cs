@@ -45,21 +45,21 @@ namespace ProjTest.Models
         {
 
         }
-        class ListsToContacts
+        private class ContactContainer
         {
-            public IList<string> Info { get; set; }
+            public List<string> Info { get; set; }
             public ContactTypes Type { get; set; }
-            public ListsToContacts(IList<string> l, ContactTypes t)
+            public ContactContainer(List<string> l, ContactTypes t)
             {
                 Info = l;
                 Type = t;
             }
 
         }
-        private List<ContactInfo> ConvertToContacts(params ListsToContacts[] coverts)
+        private List<ContactInfo> ConvertToContacts(params ContactContainer[] convertParams)
         {
             List<ContactInfo> contacts = new List<ContactInfo>();
-            foreach (var element in coverts)
+            foreach (var element in convertParams)
             {
                 if (element.Info != null)
                 {
@@ -81,7 +81,7 @@ namespace ProjTest.Models
         public PersonRecord ConvertToPerson()
         {
            
-            List<ContactInfo> contacts =ConvertToContacts(new ListsToContacts(Email, ContactTypes.Email), new ListsToContacts(Skype, ContactTypes.Skype), new ListsToContacts(Other, ContactTypes.Other), new ListsToContacts(Phone, ContactTypes.Phone));
+            List<ContactInfo> contacts =ConvertToContacts(new ContactContainer(Email, ContactTypes.Email), new ContactContainer(Skype, ContactTypes.Skype), new ContactContainer(Other, ContactTypes.Other), new ContactContainer(Phone, ContactTypes.Phone));
             return new PersonRecord(Id,Name, Surname, PatrName, BirthDay, Organization, Position, contacts);
             
             
