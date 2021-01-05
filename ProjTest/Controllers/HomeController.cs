@@ -191,15 +191,23 @@ namespace ProjTest.Controllers
                 DateTime data;
                 DateTime.TryParse(find, out data);
                 List<PersonRecord> p=db.Persons.Include(x => x.Contacts).Where(p => DateTime.Equals(p.BirthDay, data)||p.Surname.Contains(find) || p.Name.Contains(find) || p.PatrName.Contains(find) || p.Organization.Contains(find) ||  p.Position.Contains(find)  || p.Contacts.Where(i => i.PersonID == p.Id).Select(c => c.Info).Contains(find)).ToList();
-                List<ViewModel> model = new List<ViewModel>();
-                foreach (var person in p)
+                if (p != null)
                 {
-                    ViewModel m = new ViewModel(person);
-                    logger.LogInformation("Найден пользователь с ID:{0}",person.Id);
-                    model.Add(m);
+                    List<ViewModel> model = new List<ViewModel>();
+                    foreach (var person in p)
+                    {
+                        ViewModel m = new ViewModel(person);
+                        logger.LogInformation("Найден пользователь с ID:{0}", person.Id);
+                        model.Add(m);
+                    }
+
+                    return View(model);
                 }
-                
-                return View(model);               
+                else
+                {
+                    return RedirectToAction("Index");
+                }
+                             
             }
             else
             {
