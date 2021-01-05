@@ -3,15 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using ProjTest.Models;
-using System.Web;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Reflection.Metadata.Ecma335;
-using System.Reflection;
-using System.Collections;
-using System.Globalization;
 using Microsoft.Extensions.Logging;
 
 namespace ProjTest.Controllers
