@@ -218,10 +218,18 @@ namespace ProjTest.Controllers
         [HttpGet]
         public IActionResult ViewPerson(int? id)
         {
-            PersonRecord person = db.Persons.Include(x=>x.Contacts).FirstOrDefault(x => x.Id == id);
-            ViewModel model = new ViewModel(person);
-            logger.LogInformation("Просмотрен пользователь с ID:{0}", person.Id);
-            return View(model);
+            if (id != null)
+            {
+                PersonRecord person = db.Persons.Include(x => x.Contacts).FirstOrDefault(x => x.Id == id);
+                ViewModel model = new ViewModel(person);
+                logger.LogInformation("Просмотрен пользователь с ID:{0}", person.Id);
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+            
 
         }  
     }
