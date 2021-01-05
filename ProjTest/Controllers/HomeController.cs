@@ -73,12 +73,20 @@ namespace ProjTest.Controllers
             }
             else
             {
+                               
                 PersonRecord p = db.Persons.Include(c => c.Contacts).FirstOrDefault(x => x.Id == id);
-                ViewModel model = new ViewModel(p);
-                
-                ViewBag.numberOfElements = model.CreateViewBag();
+                if (p!=null)
+                {
+                    ViewModel model = new ViewModel(p);
 
-                return View(model);
+                    ViewBag.numberOfElements = model.CreateViewBag();
+
+                    return View(model);
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
             }
             
         }
@@ -221,9 +229,16 @@ namespace ProjTest.Controllers
             if (id != null)
             {
                 PersonRecord person = db.Persons.Include(x => x.Contacts).FirstOrDefault(x => x.Id == id);
-                ViewModel model = new ViewModel(person);
-                logger.LogInformation("Просмотрен пользователь с ID:{0}", person.Id);
-                return View(model);
+                if (person != null)
+                {
+                    ViewModel model = new ViewModel(person);
+                    logger.LogInformation("Просмотрен пользователь с ID:{0}", person.Id);
+                    return View(model);
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
             }
             else
             {
