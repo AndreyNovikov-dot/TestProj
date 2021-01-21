@@ -28,7 +28,7 @@ namespace ProjTest.Controllers
             List<ViewModel> model = new List<ViewModel>();
             foreach (var person in db.Persons)
             {          
-                model.Add(new ViewModel(person.Name,person.Surname,person.PatrName,person.BirthDay,person.Organization,person.Position,person.Id));
+                model.Add(new ViewModel(person));
             }
             logger.LogInformation("Вход на главную страницу");
             return View(model);

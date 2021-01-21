@@ -20,7 +20,7 @@ namespace ProjTest.Models
         [ListPhone(ErrorMessage = "Неверный формат")]
         public List<string> Phone { get; set; }
 
-        [ListSkype(ErrorMessage = "Превышение макс длины")]
+        [ListOther(ErrorMessage = "Превышение макс длины")]
         public List<string> Other { get; set; }
         public ViewModel(string personName, string personSurname, string personPatrName, DateTime personBirthDay, string personOrganization, string personPosition, int personId) : base(personName, personSurname, personPatrName, personBirthDay, personOrganization, personPosition)
         {
@@ -35,11 +35,14 @@ namespace ProjTest.Models
             Organization = p.Organization;
             Position=p.Position;
             BirthDay = p.BirthDay;
-
-            Email = p.Contacts.Where(x => x.Type == ContactTypes.Email&&x.PersonID==p.Id).Select(x=>x.Info).ToList();
-            Skype = p.Contacts.Where(x => x.Type == ContactTypes.Skype && x.PersonID == p.Id).Select(x => x.Info).ToList();
-            Phone = p.Contacts.Where(x => x.Type == ContactTypes.Phone && x.PersonID == p.Id).Select(x => x.Info).ToList();
-            Other = p.Contacts.Where(x => x.Type == ContactTypes.Other && x.PersonID == p.Id).Select(x => x.Info).ToList();
+            if (p.Contacts != null)
+            {
+                Email = p.Contacts.Where(x => x.Type == ContactTypes.Email && x.PersonID == p.Id).Select(x => x.Info).ToList();
+                Skype = p.Contacts.Where(x => x.Type == ContactTypes.Skype && x.PersonID == p.Id).Select(x => x.Info).ToList();
+                Phone = p.Contacts.Where(x => x.Type == ContactTypes.Phone && x.PersonID == p.Id).Select(x => x.Info).ToList();
+                Other = p.Contacts.Where(x => x.Type == ContactTypes.Other && x.PersonID == p.Id).Select(x => x.Info).ToList();
+            }
+            
         }
         public ViewModel()
         {
